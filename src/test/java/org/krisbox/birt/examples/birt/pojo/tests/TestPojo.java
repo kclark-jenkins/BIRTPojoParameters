@@ -31,6 +31,10 @@ public class TestPojo {
             exceptions.add(ex);
         }
 
+        exceptions.forEach(ex->{
+            assertEquals(null,ex);
+        });
+
         try {
             assertEquals("Wells Fargo & Company",       complaints.get(0).getCompany());
             assertEquals("",                            complaints.get(0).getCompanyPublicResponse());
@@ -53,10 +57,6 @@ public class TestPojo {
         }catch(Exception ex){
             exceptions.add(ex);
         }
-
-        exceptions.forEach(ex->{
-            assertEquals(null,ex);
-        });
     }
 
     @Test
@@ -88,6 +88,10 @@ public class TestPojo {
             exceptions.add(ex);
         }
 
+        exceptions.forEach(ex->{
+            assertEquals(null,ex);
+        });
+
         try {
             assertEquals("Santander Bank US",                       complaints.getCompany());
             assertEquals("",                                        complaints.getCompanyPublicResponse());
@@ -110,9 +114,5 @@ public class TestPojo {
         }catch(Exception ex){
             exceptions.add(ex);
         }
-
-        exceptions.forEach(ex->{
-            assertEquals(null,ex);
-        });
     }
 }
