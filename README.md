@@ -16,7 +16,6 @@ To get all data
         ComplaintsDataset dataset = new ComplaintsDatasetImpl();
         dataset.open(null, filters);
         complaints = (Complaints)dataset.next();
-        exception3 = ex;
 ```
 
 or to filter on a row
@@ -27,5 +26,4 @@ or to filter on a row
         ComplaintsDataset dataset = new ComplaintsDatasetImpl();
         dataset.open(null, filters);
         complaints = (Complaints)dataset.next();
-        exception3 = ex;
 ```
