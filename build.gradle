@@ -12,6 +12,10 @@ def log4jVersion = '1.2.17'
 def openCSVGroup   = 'com.opencsv'
 def openCSVName    = 'opencsv'
 def openCSVVersion = '3.8'
+
+def univocityGroup   = 'com.univocity'
+def univocityName    = 'univocity-parsers'
+def univocityVersion = '2.2.3'
 repositories {
     mavenCentral()
 }
@@ -19,5 +23,5 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     compile group: log4jGroup, name: log4jName, version: log4jVersion
-    compile group: openCSVGroup, name: openCSVName, version: openCSVVersion
+    compile group: univocityGroup, name: univocityName, version: univocityVersion
 }

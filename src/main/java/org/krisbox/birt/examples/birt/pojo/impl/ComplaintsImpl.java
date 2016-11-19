@@ -1,27 +1,48 @@
 package org.krisbox.birt.examples.birt.pojo.impl;
 
+import com.univocity.parsers.annotations.NullString;
+import com.univocity.parsers.annotations.Parsed;
 import org.krisbox.birt.examples.birt.pojo.Complaints;
 
 import java.util.Date;
 
 public class ComplaintsImpl implements Complaints {
+
+    @Parsed(index=0)
     private String  dateReceived;
+    @Parsed(index=1)
     private String  product;
+    @Parsed(index=2)
     private String  subProduct;
+    @Parsed(index=3)
     private String  issue;
+    @Parsed(index=4)
     private String  subIssue;
+    @Parsed(index=5)
     private String  consumerComplaintNarrative;
+    @Parsed(index=6)
     private String  companyPublicResponse;
+    @Parsed(index=7)
     private String  company;
+    @Parsed(index=8)
     private String  state;
+    @Parsed(index=9)
     private String  zipCode;
+    @Parsed(index=10)
     private String  tags;
+    @Parsed(index=11)
     private String  consumerConsentProvided;
+    @Parsed(index=12)
     private String  submittedVia;
+    @Parsed(index=13)
     private String  dateSentToCompany;
+    @Parsed(index=14)
     private String  companyResponseToConsumer;
+    @Parsed(index=15)
     private String  timelyResponse;
+    @Parsed(index=16)
     private String  consumerDisputed;
+    @Parsed(index=17)
     private String  complaintID;
 
 

@@ -11,10 +11,10 @@ public class ComplaintsDatasetImpl extends CSVParserImpl implements ComplaintsDa
         super();
     }
 
-    Iterator<Complaints> iterator;
+    Iterator<ComplaintsImpl> iterator;
 
     public void open(Object appContext, Map<String, Object> dataSetParamValues) {
-        List<Complaints> customers = getComplaints(dataSetParamValues);
+        List<ComplaintsImpl> customers = getComplaints(dataSetParamValues);
         iterator = customers.iterator();
     }
 
@@ -29,8 +29,8 @@ public class ComplaintsDatasetImpl extends CSVParserImpl implements ComplaintsDa
         iterator = null;
     }
 
-    public List<Complaints> getComplaints(Map<String, Object> dataSetParamValues) {
-        List<Complaints> dataset = getDataset(dataSetParamValues);
+    public List<ComplaintsImpl> getComplaints(Map<String, Object> dataSetParamValues) {
+        List<ComplaintsImpl> dataset = getDataset(dataSetParamValues);
         return dataset;
     }
 }
