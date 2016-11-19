@@ -9,10 +9,6 @@ def log4jGroup   = 'log4j'
 def log4jName    = 'log4j'
 def log4jVersion = '1.2.17'
 
-def openCSVGroup   = 'com.opencsv'
-def openCSVName    = 'opencsv'
-def openCSVVersion = '3.8'
-
 def univocityGroup   = 'com.univocity'
 def univocityName    = 'univocity-parsers'
 def univocityVersion = '2.2.3'
