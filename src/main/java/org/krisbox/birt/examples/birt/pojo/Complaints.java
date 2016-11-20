@@ -1,8 +1,10 @@
 package org.krisbox.birt.examples.birt.pojo;
 
+import org.krisbox.birt.examples.birt.pojo.utils.BIRTPojoLogger;
+
 import java.util.Date;
 
-public interface Complaints {
+public interface Complaints extends BIRTPojoLogger {
     public String getDateReceived();
     public String getProduct();
     public String getSubProduct();

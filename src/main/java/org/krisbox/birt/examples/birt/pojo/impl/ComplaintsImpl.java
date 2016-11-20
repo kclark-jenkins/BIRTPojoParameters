@@ -3,10 +3,14 @@ package org.krisbox.birt.examples.birt.pojo.impl;
 import com.univocity.parsers.annotations.NullString;
 import com.univocity.parsers.annotations.Parsed;
 import org.krisbox.birt.examples.birt.pojo.Complaints;
+import org.krisbox.birt.examples.birt.pojo.utils.impl.BIRTPojoLoggerImpl;
 
 import java.util.Date;
 
-public class ComplaintsImpl implements Complaints {
+public class ComplaintsImpl extends BIRTPojoLoggerImpl implements Complaints {
+    public ComplaintsImpl() {
+        super();
+    }
 
     @Parsed(index=0)
     private String  dateReceived;

@@ -7,19 +7,22 @@ import com.univocity.parsers.csv.CsvParserSettings;
 import org.krisbox.birt.examples.birt.pojo.Complaints;
 import org.krisbox.birt.examples.birt.pojo.impl.ComplaintsImpl;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CSVParserImpl extends BIRTPojoLoggerImpl {
-    private final String DATASET;
+    private String DATASET;
 
     public CSVParserImpl() {
         super();
-        DATASET = new String("/Consumer_Complaints.csv");
     }
 
-    public List<ComplaintsImpl> getDataset(Map<String, Object> dataSetParamValues) {
-        return parseFile(dataSetParamValues);
+    public List<ComplaintsImpl> getDataset(Map<String, Object> dataSet) {
+        return parseFile(dataSet);
     }
 
     private List<ComplaintsImpl> parseFile(Map<String, Object> datasetFilters) {
@@ -30,99 +33,81 @@ public class CSVParserImpl extends BIRTPojoLoggerImpl {
         parserSettings.setMaxCharsPerColumn(8000);
         parserSettings.setProcessor(new ConcurrentRowProcessor(rowProcessor));
         CsvParser parser = new CsvParser(parserSettings);
-        parser.parse(new InputStreamReader(CSVParserImpl.class.getResourceAsStream(DATASET)));
-        List<ComplaintsImpl> beans = rowProcessor.getBeans();
 
-        if(datasetFilters == null)
-            return beans;
-        else
-            return filter(beans, datasetFilters);
-    }
-
-    private List<ComplaintsImpl> filter(List<ComplaintsImpl> dataSetParamValues, Map<String, Object> filters) {
-        List<ComplaintsImpl> dataset = new ArrayList<ComplaintsImpl>();
-
-        if(dataSetParamValues != null) {
-            dataSetParamValues.forEach(line->{
-                filters.forEach((k,v)->{
-                    switch(k) {
-                        case "dateReceived":
-                            if(!((Complaints) line).getDateReceived().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "product":
-                            if(!((Complaints) line).getProduct().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "subProduct":
-                            if(!((Complaints) line).getSubProduct().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "issue":
-                            if(!((Complaints) line).getIssue().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "subIssue":
-                            if(!((Complaints) line).getSubIssue().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "consumerComplaintNarrative":
-                            if(!((Complaints) line).getConsumerComplaintNarrative().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "companyPublicResponse":
-                            if(!((Complaints) line).getCompanyPublicResponse().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "company":
-                            if(!((Complaints) line).getCompany().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "state":
-                            if(!((Complaints) line).getState().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "zipCode":
-                            if(!((Complaints) line).getZipCode().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "tags":
-                            if(!((Complaints) line).getTags().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "consumerConsentProvided":
-                            if(!((Complaints) line).getConsumerConsentProvided().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "submittedVia":
-                            if(!((Complaints) line).getSubmittedVia().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "dateSentToCompany":
-                            if(!((Complaints) line).getDateSentToCompany().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "companyResponseToConsumer":
-                            if(!((Complaints) line).getCompanyResponseToConsumer().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "timelyResponse":
-                            if(!((Complaints) line).getTimelyResponse().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "consumerDisputed":
-                            if(!((Complaints) line).getConsumerDisputed().contains((String)v))
-                                dataset.add(line);
-                            break;
-                        case "complaintID":
-                            if(!((Complaints) line).getComplaintID().contains((String)v))
-                                dataset.add(line);
-                            break;
-                    }
-                });
-            });
+        try {
+            parser.parse(new InputStreamReader(new FileInputStream((String)datasetFilters.get("flatfile"))));
+        }catch(FileNotFoundException ex){
+            fatal(ex);
         }
 
-        return dataset;
+
+        final List<ComplaintsImpl>[] dataset = new List[]{new ArrayList<ComplaintsImpl>()};
+        dataset[0] = rowProcessor.getBeans();
+
+
+        return filterDataset(dataset, datasetFilters);
+    }
+
+    private List<ComplaintsImpl> filterDataset(List<ComplaintsImpl>[] dataset, Map<String, Object> datasetFilters) {
+        datasetFilters.forEach((k,v)->{
+            switch(k) {
+                case "dateReceived":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getDateReceived())).collect(Collectors.toList());
+                    break;
+                case "product":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getProduct())).collect(Collectors.toList());
+                    break;
+                case "subProduct":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getSubProduct())).collect(Collectors.toList());
+                    break;
+                case "issue":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getIssue())).collect(Collectors.toList());
+                    break;
+                case "subIssue":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getSubIssue())).collect(Collectors.toList());
+                    break;
+                case "consumerComplaintNarrative":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getConsumerComplaintNarrative())).collect(Collectors.toList());
+                    break;
+                case "companyPublicResponse":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getCompanyPublicResponse())).collect(Collectors.toList());
+                    break;
+                case "company":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getCompany())).collect(Collectors.toList());
+                    break;
+                case "state":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getState())).collect(Collectors.toList());
+                    break;
+                case "zipCode":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getZipCode())).collect(Collectors.toList());
+                    break;
+                case "tags":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getTags())).collect(Collectors.toList());
+                    break;
+                case "consumerConsentProvided":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getConsumerConsentProvided())).collect(Collectors.toList());
+                    break;
+                case "submittedVia":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getSubmittedVia())).collect(Collectors.toList());
+                    break;
+                case "dateSentToCompany":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getDateSentToCompany())).collect(Collectors.toList());
+                    break;
+                case "companyResponseToConsumer":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getCompanyResponseToConsumer())).collect(Collectors.toList());
+                    break;
+                case "timelyResponse":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getTimelyResponse())).collect(Collectors.toList());
+                    break;
+                case "consumerDisputed":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getConsumerDisputed())).collect(Collectors.toList());
+                    break;
+                case "complaintID":
+                    dataset[0] = dataset[0].stream().filter(line -> !datasetFilters.get(k).equals(line.getComplaintID())).collect(Collectors.toList());
+                    break;
+            }
+        });
+
+        return dataset[0];
     }
 }

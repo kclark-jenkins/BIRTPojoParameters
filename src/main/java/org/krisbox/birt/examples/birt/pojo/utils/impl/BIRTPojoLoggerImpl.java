@@ -1,10 +1,16 @@
 package org.krisbox.birt.examples.birt.pojo.utils.impl;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.krisbox.birt.examples.birt.pojo.utils.BIRTPojoLogger;
 
 public class BIRTPojoLoggerImpl implements BIRTPojoLogger {
-    private final Logger LOGGER = Logger.getLogger(BIRTPojoLogger.class);
+    private final Logger LOGGER;
+
+    public BIRTPojoLoggerImpl() {
+        PropertyConfigurator.configure(this.getClass().getResource("../log4j.properties"));
+        LOGGER = Logger.getLogger(BIRTPojoLogger.class);
+    }
 
     public void debug(Object msg) {
         LOGGER.debug(msg);
