@@ -16,6 +16,10 @@ repositories {
     mavenCentral()
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.10' //we want gradle 2.10 to run this project
+}
+
 task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'BIRT Pojo with Parameters Examples',
